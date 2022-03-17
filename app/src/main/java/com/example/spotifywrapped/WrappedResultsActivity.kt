@@ -3,6 +3,7 @@ package com.example.spotifywrapped
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 
@@ -41,4 +42,13 @@ class WrappedResultsActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, null))
 
     }
+
+
+    private fun playMusic(){
+
+        val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+        startActivity(intent)
+    }
+
+
 }
