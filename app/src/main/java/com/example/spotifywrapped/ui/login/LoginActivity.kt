@@ -3,6 +3,7 @@ package com.example.spotifywrapped.ui.login
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +17,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.example.spotifywrapped.R
 import com.example.spotifywrapped.WrappedResultsActivity
 import com.example.spotifywrapped.databinding.ActivityLoginBinding
@@ -32,6 +34,7 @@ object SpotifyConstants {
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var sharedPreferences : SharedPreferences
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
@@ -40,11 +43,11 @@ class LoginActivity : AppCompatActivity() {
 
 //        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_login)
-//
-//        val username = binding.username
-//        val password = binding.password
+
         val login = findViewById<Button>(R.id.login)
 //        val loading = binding.loading
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         login.setOnClickListener {
 
@@ -67,7 +70,10 @@ class LoginActivity : AppCompatActivity() {
             SpotifyConstants.CALLBACK_URI
         )
             .setShowDialog(false)
-            .setScopes(arrayOf("user-read-email", "user-read-recently-played"))
+            .setScopes(arrayOf(
+                "user-read-recently-played",
+                "user-top-read",
+            ))
             .build()
     }
 
@@ -77,13 +83,23 @@ class LoginActivity : AppCompatActivity() {
             val res = AuthorizationClient.getResponse(resultCode, data)
             val accessToken: String? = res.accessToken
 
-
-
             when (res.type) {
-                AuthorizationResponse.Type.TOKEN -> Log.d(
-                    "SpotifyLogin",
-                    "Access Token: $accessToken"
-                )
+                AuthorizationResponse.Type.TOKEN -> {
+                    Log.d(
+                        "SpotifyLogin",
+                        "Access Token: $accessToken"
+                    )
+
+                    // add to shared prefs
+                    val editor = sharedPreferences.edit()
+
+                    editor.putString(getString(R.string.token_val), accessToken)
+                    editor.apply()
+
+                    val savedToken = sharedPreferences.getString(getString(R.string.token_val), "token_val")
+
+                    Log.d("SpotifyLogin", "savedToken: $savedToken")
+                }
                 AuthorizationResponse.Type.ERROR -> Log.d(
                     "SpotifyLogin",
                     "RESPONSE(ERROR): ${res.error}"

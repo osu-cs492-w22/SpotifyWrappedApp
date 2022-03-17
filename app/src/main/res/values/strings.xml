@@ -16,4 +16,6 @@
     <string name="action_share">Share</string>
     <string name="share_text">%1 on Spotify: %2$s</string>
 
+    <string name="token_val">token_val</string>
+
 </resources>
