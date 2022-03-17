@@ -100,8 +100,8 @@ class LoginActivity : AppCompatActivity() {
 
                     Log.d("SpotifyLogin", "savedToken: $savedToken")
 
-//                    val intent = Intent(this, LoginResult::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, WrappedResultsActivity::class.java)
+                    startActivity(intent)
 
                 }
                 AuthorizationResponse.Type.ERROR -> Log.d(
