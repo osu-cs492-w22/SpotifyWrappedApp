@@ -1,4 +1,4 @@
-package com.example.spotifywrapped
+package com.example.spotifywrapped.ui.results
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import com.example.spotifywrapped.R
 
-class WrappedResultsActivity : AppCompatActivity() {
+class ResultsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,7 +16,7 @@ class WrappedResultsActivity : AppCompatActivity() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.share_results,menu)
         return super.onCreateOptionsMenu(menu)
     }

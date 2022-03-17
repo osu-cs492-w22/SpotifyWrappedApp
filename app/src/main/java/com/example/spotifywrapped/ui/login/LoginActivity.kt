@@ -1,26 +1,14 @@
 package com.example.spotifywrapped.ui.login
 
-import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.example.spotifywrapped.R
-import com.example.spotifywrapped.WrappedResultsActivity
-import com.example.spotifywrapped.databinding.ActivityLoginBinding
+import com.example.spotifywrapped.ui.results.ResultsActivity
 
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -100,8 +88,13 @@ class LoginActivity : AppCompatActivity() {
 
                     Log.d("SpotifyLogin", "savedToken: $savedToken")
 
-                    val intent = Intent(this, WrappedResultsActivity::class.java)
-                    startActivity(intent)
+                    if (savedToken == null) {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, ResultsActivity::class.java)
+                        startActivity(intent)
+                    }
 
                 }
                 AuthorizationResponse.Type.ERROR -> Log.d(

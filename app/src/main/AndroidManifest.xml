@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpotifyWrapped">
         <activity
-            android:name=".WrappedResultsActivity"
+            android:name=".ui.results.ResultsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
