@@ -18,4 +18,14 @@
 
     <string name="token_val">token_val</string>
 
+    <string name="top_artists">Top Artists</string>
+    <string name="top_songs">Top Songs</string>
+    <string name="top_genres">Top Genres</string>
+
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
+    <string name="this_year">This Year</string>
+
+
 </resources>
