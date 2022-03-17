@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var binding: ActivityLoginBinding
+//    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +99,10 @@ class LoginActivity : AppCompatActivity() {
                     val savedToken = sharedPreferences.getString(getString(R.string.token_val), "token_val")
 
                     Log.d("SpotifyLogin", "savedToken: $savedToken")
+
+//                    val intent = Intent(this, LoginResult::class.java)
+//                    startActivity(intent)
+
                 }
                 AuthorizationResponse.Type.ERROR -> Log.d(
                     "SpotifyLogin",
