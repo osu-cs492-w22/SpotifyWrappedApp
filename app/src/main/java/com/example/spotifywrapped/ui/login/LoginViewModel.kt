@@ -1,5 +1,7 @@
 package com.example.spotifywrapped.ui.login
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,48 +10,38 @@ import com.example.spotifywrapped.data.LoginRepository
 import com.example.spotifywrapped.data.Result
 
 import com.example.spotifywrapped.R
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    val CLIENT_ID = "e52d26b096564c6299aea975dac46191"
+    val CLIENT_SECRET = "ecb6cb7cc5c34b5bb5227f143a989815"
+    val REDIRECT_URI = "https://localhost/callback/"
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private var spotifyAppRemote: SpotifyAppRemote? = null
+    private var connectionParams: ConnectionParams = ConnectionParams.Builder(CLIENT_ID)
+        .setRedirectUri(REDIRECT_URI)
+        .showAuthView(true)
+        .build()
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+    fun connect(context: Context, handler: (connected: Boolean) -> Unit) {
+        if (spotifyAppRemote?.isConnected == true) {
+            handler(true)
+            return
         }
-    }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+        val connectionListener = object : Connector.ConnectionListener {
+            override fun onConnected(spotifyAppRemote: SpotifyAppRemote?) {
+                this@LoginViewModel.spotifyAppRemote = spotifyAppRemote
+                handler(true)
+            }
+
+            override fun onFailure(error: Throwable?) {
+                Log.e("SpotifyLogin", error?.message, error)
+            }
         }
-    }
-
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
-    }
-
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        SpotifyAppRemote.connect(context, connectionParams, connectionListener)
     }
 }
