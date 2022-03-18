@@ -7,6 +7,10 @@
     android:background="#2C2B2B"
     tools:context=".WrappedResultsActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_wrapped_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/results"

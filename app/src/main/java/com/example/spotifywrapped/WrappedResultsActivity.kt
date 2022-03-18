@@ -1,31 +1,72 @@
 package com.example.spotifywrapped
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import androidx.activity.viewModels
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
+import com.example.spotifywrapped.data.SpotifyItem
+import com.example.spotifywrapped.data.SpotifyItems
+import com.example.spotifywrapped.ui.SpotifyAdapter
+import com.example.spotifywrapped.ui.SpotifyViewModel
+
 
 class WrappedResultsActivity : AppCompatActivity() {
 
     private val apiBaseUrl = "https://api.spotify.com"
     private val tag = "MainActivity"
 
+    private lateinit var spotifyAdapter: SpotifyAdapter
+    private val viewModel: SpotifyViewModel by viewModels()
+
+    private lateinit var requestQueue: RequestQueue
+    private lateinit var spotifyListRV: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrapped_results)
+
+        spotifyListRV = findViewById(R.id.rv_wrapped_list)
+
+        spotifyAdapter = SpotifyAdapter(::onSpotifyItemClick)
+
+        spotifyListRV.layoutManager = LinearLayoutManager(this)
+        spotifyListRV.setHasFixedSize(true)
+        spotifyListRV.adapter = spotifyAdapter
+
+
+        requestQueue = Volley.newRequestQueue(this)
+
+        viewModel.spotifyResults.observe(this) { spotifyResults ->
+            if (spotifyResults != null) {
+                spotifyAdapter.updateResultList(spotifyResults.items)
+            }
+        }
+
+
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+//        val type = sharedPrefs.getString(
+//            getString(R.string.pref_location_key),
+//            getString(R.string.pref_location_default)
+//        )
+
+        viewModel.loadResults("tracks")
+
+    }
+
+    private fun onSpotifyItemClick(spotifyItem: SpotifyItem) {
+
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.share_results,menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -42,35 +83,35 @@ class WrappedResultsActivity : AppCompatActivity() {
     }
 
 
-    fun doRepoSearch(q: String){
-        val url = "$apiBaseUrl/v1/me/top/q=$q"
-
-        val moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-
-        val jsonAdapter: JsonAdapter<WeatherResults> =
-            moshi.adapter(WeatherResults::class.java)
-
-        val req = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                val results = jsonAdapter.fromJson(it)
-                Log.d(tag, results.toString())
-                repoListAdapter.updateRepoList(results?.list)
-
-                //searchResultsListRV.visibility = View.INVISIBLE
-                //Log.d(tag,it)
-            },
-            {
-                Log.d(tag, "Error fetching from $url: ${it.message}")
-
-            }
-        )
-
-        requestQueue.add(req)
-    }
+//    fun doRepoSearch(q: String){
+//        val url = "$apiBaseUrl/v1/me/top/q=$q"
+//
+//        val moshi = Moshi.Builder()
+//            .addLast(KotlinJsonAdapterFactory())
+//            .build()
+//
+//        val jsonAdapter: JsonAdapter<SpotifyItems> =
+//            moshi.adapter(SpotifyItems::class.java)
+//
+//        val req = StringRequest(
+//            Request.Method.GET,
+//            url,
+//            {
+//                val results = jsonAdapter.fromJson(it)
+//                Log.d(tag, results.toString())
+//                repoListAdapter.updateRepoList(results?.list)
+//
+//                //searchResultsListRV.visibility = View.INVISIBLE
+//                //Log.d(tag,it)
+//            },
+//            {
+//                Log.d(tag, "Error fetching from $url: ${it.message}")
+//
+//            }
+//        )
+//
+//        //requestQueue.add(req)
+//    }
 
     private fun shareResults() {
 

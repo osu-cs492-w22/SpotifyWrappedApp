@@ -1,5 +1,6 @@
 package com.example.spotifywrapped.data
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,8 +21,10 @@ class SpotifyResultsRepository(
         withContext(ioDispatcher){
             try{
                 val results = service.searchResults(type, 5, 0, "medium_term")
+                Log.d("loaded Results", results.toString())
                 Result.success(results)
             }catch(e: Exception){
+                Log.d("error", e.toString())
                 Result.failure(e)
             }
         }

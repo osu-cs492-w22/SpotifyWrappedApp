@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface SpotifyService {
 
-    @GET("https://api.spotify/v1/me")
+    @GET("https://api.spotify.com/v1/me/top/")
     suspend fun searchResults(
 
         @Path ("type")type: String,
