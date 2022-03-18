@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -25,7 +23,7 @@ class WrappedResultsActivity : AppCompatActivity() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.share_results,menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -41,36 +39,6 @@ class WrappedResultsActivity : AppCompatActivity() {
         }
     }
 
-
-    fun doRepoSearch(q: String){
-        val url = "$apiBaseUrl/v1/me/top/q=$q"
-
-        val moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-
-        val jsonAdapter: JsonAdapter<WeatherResults> =
-            moshi.adapter(WeatherResults::class.java)
-
-        val req = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                val results = jsonAdapter.fromJson(it)
-                Log.d(tag, results.toString())
-                repoListAdapter.updateRepoList(results?.list)
-
-                //searchResultsListRV.visibility = View.INVISIBLE
-                //Log.d(tag,it)
-            },
-            {
-                Log.d(tag, "Error fetching from $url: ${it.message}")
-
-            }
-        )
-
-        requestQueue.add(req)
-    }
 
     private fun shareResults() {
 
