@@ -1,5 +1,6 @@
 package com.example.spotifywrapped.data
 
+import android.content.Context
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
 import java.io.IOException
@@ -22,13 +24,12 @@ interface SpotifyService {
     @Headers(
         "Accept: application/json",
         "Content-type: application/json",
-        "Authorization: Bearer BQD7WCJ9mtzP9ScHYgnM-ro999Dgo9jC27MtwcJzDqq9EEAmjS8w1tCObGFKRhjtLIIL63fX3c2yXGnv4wz6iy_vGNW4gH7fAv_m-6SuU7IEP4G9khLoyroy738I_9U76EciUJy8xk17r5SOf6M0s_I2bStV",
+//        "Authorization: Bearer BQD7WCJ9mtzP9ScHYgnM-ro999Dgo9jC27MtwcJzDqq9EEAmjS8w1tCObGFKRhjtLIIL63fX3c2yXGnv4wz6iy_vGNW4gH7fAv_m-6SuU7IEP4G9khLoyroy738I_9U76EciUJy8xk17r5SOf6M0s_I2bStV",
         "Host: api.spotify.com"
     )
+//    @Header("Authorization")
     @GET("https://api.spotify.com/v1/me/top/tracks")
     suspend fun searchResults(
-
-
 
 //        @Path ("type")type: String,
         @Query("limit") limit: Int,
@@ -39,7 +40,7 @@ interface SpotifyService {
 
     companion object{
         private const val BASE_URL = "https://api.spotify.com"
-        fun create():SpotifyService{
+        fun create(context: Context):SpotifyService{
 
             val moshi = Moshi.Builder()
                 .addLast(KotlinJsonAdapterFactory())
@@ -50,22 +51,7 @@ interface SpotifyService {
 
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor(logging)
-
-//            val token = PreferenceManager.getDefaultSharedPreferences()
-//
-////            httpClient.requestBuilder.addHeader("Authorization: ,", "Bearer $token");
-//
-//            httpClient.networkInterceptors().add(object : Interceptor {
-//                @Throws(IOException::class)
-//                override fun intercept(chain: Interceptor.Chain): Response {
-//                    val requestBuilder: Request.Builder = chain.request().newBuilder()
-//                    requestBuilder.header(
-//                        "Content-Type", "application/json",
-//
-//                    )
-//                    return chain.proceed(requestBuilder.build())
-//                }
-//            })
+            httpClient.addInterceptor(AuthInterceptor(context)) // adds the auth token to the 'Authorization' header
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)

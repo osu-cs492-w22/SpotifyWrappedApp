@@ -30,7 +30,7 @@ class WrappedResultsActivity : AppCompatActivity() {
     private lateinit var spotifyAdapter: SpotifyAdapter
     private val viewModel: SpotifyViewModel by viewModels()
 
-    private lateinit var requestQueue: RequestQueue
+//    private lateinit var requestQueue: RequestQueue
     private lateinit var spotifyListRV: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class WrappedResultsActivity : AppCompatActivity() {
         spotifyListRV.adapter = spotifyAdapter
 
 
-        requestQueue = Volley.newRequestQueue(this)
+//        requestQueue = Volley.newRequestQueue(this)
 
         viewModel.spotifyResults.observe(this) { spotifyResults ->
             if (spotifyResults != null) {

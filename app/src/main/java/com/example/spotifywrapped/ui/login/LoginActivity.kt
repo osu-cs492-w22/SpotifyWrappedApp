@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.example.spotifywrapped.R
 import com.example.spotifywrapped.WrappedResultsActivity
+import com.example.spotifywrapped.data.SessionManager
 import com.example.spotifywrapped.databinding.ActivityLoginBinding
 
 import com.spotify.sdk.android.auth.AuthorizationClient
@@ -36,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var loginViewModel: LoginViewModel
+
+    private lateinit var sessionManager: SessionManager
 //    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
 //        val loading = binding.loading
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sessionManager = SessionManager(this)
 
         login.setOnClickListener {
 
@@ -91,14 +94,16 @@ class LoginActivity : AppCompatActivity() {
                     )
 
                     // add to shared prefs
-                    val editor = sharedPreferences.edit()
+//                    val editor = sharedPreferences.edit()
 
-                    editor.putString(getString(R.string.token_val), accessToken)
-                    editor.apply()
+                    sessionManager.saveToken(accessToken!!)
 
-                    val savedToken = sharedPreferences.getString(getString(R.string.token_val), "token_val")
+//                    editor.putString(getString(R.string.token_val), accessToken)
+//                    editor.apply()
 
-                    Log.d("SpotifyLogin", "savedToken: $savedToken")
+//                    val savedToken = sharedPreferences.getString(getString(R.string.token_val), "token_val")
+
+                    Log.d("SpotifyLogin", "savedToken: ${sessionManager.getToken()}")
 
                     val intent = Intent(this, WrappedResultsActivity::class.java)
                     startActivity(intent)
