@@ -1,5 +1,6 @@
 package com.example.spotifywrapped.ui.results
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +16,8 @@ import com.example.spotifywrapped.R
 import com.example.spotifywrapped.data.utils.SessionManager
 
 class SpotifyResultsActivity : AppCompatActivity() {
-    private lateinit var sessionManager: SessionManager
 
+    private lateinit var sessionManager: SessionManager
     private lateinit var spotifyResultsAdapter: SpotifyResultsAdapter
     private val resultsViewModel: SpotifyResultsViewModel by viewModels()
 
@@ -27,10 +28,10 @@ class SpotifyResultsActivity : AppCompatActivity() {
     private lateinit var mediumTermBtn: Button
     private lateinit var longTermBtn: Button
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-
-
         setContentView(R.layout.activity_wrapped_results)
 
         spotifyListRV = findViewById(R.id.rv_wrapped_list)
@@ -39,7 +40,6 @@ class SpotifyResultsActivity : AppCompatActivity() {
         spotifyListRV.layoutManager = LinearLayoutManager(this)
         spotifyListRV.setHasFixedSize(true)
         spotifyListRV.adapter = spotifyResultsAdapter
-
 
         topArtistsBtn = findViewById(R.id.top_artists)
         topSongsBtn = findViewById(R.id.top_songs)
@@ -92,17 +92,28 @@ class SpotifyResultsActivity : AppCompatActivity() {
             resultsViewModel.loadResults(type!!, "long_term")
         }
 
+
         sessionManager.setType("artists")
         sessionManager.setRange("medium_term")
 
         val type = sessionManager.getType()
         val range = sessionManager.getRange()
 
-
         resultsViewModel.loadResults(type!!, range!!)
     }
 
     private fun onSpotifyItemClick(spotifyItem: SpotifyItem) {
+
+        Log.d("CLICK","here")
+
+        val webUri = spotifyItem.external_urls.spotify
+        Log.d("web-uri",webUri)
+
+        val webIntent: Intent = Uri.parse(webUri).let { webpage ->
+            Intent(Intent.ACTION_VIEW, webpage)
+        }
+
+        startActivity(webIntent)
 
     }
 
@@ -117,6 +128,10 @@ class SpotifyResultsActivity : AppCompatActivity() {
         return when(item.itemId) {
             R.id.action_share -> {
                 shareResults()
+                true
+            }
+            R.id.action_launch -> {
+                launchResults()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -136,12 +151,20 @@ class SpotifyResultsActivity : AppCompatActivity() {
 
     }
 
+    private fun launchResults(){
 
-//    private fun playMusic(){
-//
-//        val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
-//        startActivity(intent)
-//    }
+        var webUri: String? = null
+        resultsViewModel.spotifyResults.observe(this) { spotifyResults ->
+            if (spotifyResults != null) {
+                webUri = spotifyResults.items[0].external_urls.spotify
+            }
+        }
 
+        val webIntent: Intent = Uri.parse(webUri).let { webpage ->
+            Intent(Intent.ACTION_VIEW, webpage)
+        }
+
+        startActivity(webIntent)
+    }
 
 }

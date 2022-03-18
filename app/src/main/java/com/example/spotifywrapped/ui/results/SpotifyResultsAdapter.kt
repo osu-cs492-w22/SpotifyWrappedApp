@@ -12,7 +12,7 @@ import com.example.spotifywrapped.R
 import com.example.spotifywrapped.data.SpotifyItem
 
 
-class SpotifyResultsAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
+class SpotifyResultsAdapter(private val onSpotifyItemClick: (SpotifyItem) -> Unit)
     : RecyclerView.Adapter<SpotifyResultsAdapter.ViewHolder>() {
 
     var resultList = listOf<SpotifyItem>()
@@ -29,30 +29,29 @@ class SpotifyResultsAdapter(private val onResultItemClicked: (SpotifyItem) -> Un
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.spotify_result_item, parent, false)
-        return ViewHolder(view, onResultItemClicked)
+        return ViewHolder(view, onSpotifyItemClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(resultList[position])
     }
 
-    class ViewHolder(view: View, val onResultItemClicked: (SpotifyItem) -> Unit) :
+    class ViewHolder(view: View, val onSpotifyItemClick: (SpotifyItem) -> Unit) :
         RecyclerView.ViewHolder(view) {
+
         private var currentForecastPeriod: SpotifyItem? = null
         private val nameTV: TextView = itemView.findViewById(R.id.tv_item_name)
         private val iconIV: ImageView = itemView.findViewById(R.id.spotify_icon)
-
         val ctx = itemView.context
 
         init {
             itemView.setOnClickListener {
-                currentForecastPeriod?.let(onResultItemClicked)
+                currentForecastPeriod?.let(onSpotifyItemClick)
             }
         }
 
         fun bind(spotifyItem: SpotifyItem) {
             nameTV.text = ctx.getString(R.string.result_name, spotifyItem.name)
-
 
             if (spotifyItem.images != null) {
                 val url = spotifyItem.images[1].url
@@ -66,5 +65,10 @@ class SpotifyResultsAdapter(private val onResultItemClicked: (SpotifyItem) -> Un
                     .into(iconIV)
             }
         }
+
+
     }
+
+
+
 }

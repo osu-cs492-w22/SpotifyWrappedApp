@@ -15,7 +15,7 @@
     <string name="login_failed">"Login failed"</string>
 
     <string name="action_share">Share</string>
-    <string name="share_text">%1 on Spotify: %2$s</string>
+    <string name="share_text">Share Your Spotify Wrapped Results</string>
 
     <string name="token_val">token_val</string>
 
@@ -28,6 +28,7 @@
 
     <string name="pref_forecast_units_key" translatable="false">type</string>
 
+    <string name="action_launch">View Your #1 Result on Spotify</string>
 
 
 </resources>
