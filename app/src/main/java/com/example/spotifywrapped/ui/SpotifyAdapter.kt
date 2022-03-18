@@ -57,9 +57,16 @@ class SpotifyAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
 
 
             if (spotifyItem.images != null) {
+                val url = spotifyItem.images[1].url
+                Log.d("Spotify", "$url")
+
                 Glide.with(ctx)
-                    .load(spotifyItem.images)
+                    .load(url)
+                    .dontAnimate()
+                    .placeholder(R.drawable.profile_icon)
+                    .error(R.drawable.profile_icon)
                     .into(iconIV)
+
             }
         }
     }

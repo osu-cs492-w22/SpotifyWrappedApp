@@ -140,36 +140,6 @@ class WrappedResultsActivity : AppCompatActivity() {
     }
 
 
-//    fun doRepoSearch(q: String){
-//        val url = "$apiBaseUrl/v1/me/top/q=$q"
-//
-//        val moshi = Moshi.Builder()
-//            .addLast(KotlinJsonAdapterFactory())
-//            .build()
-//
-//        val jsonAdapter: JsonAdapter<SpotifyItems> =
-//            moshi.adapter(SpotifyItems::class.java)
-//
-//        val req = StringRequest(
-//            Request.Method.GET,
-//            url,
-//            {
-//                val results = jsonAdapter.fromJson(it)
-//                Log.d(tag, results.toString())
-//                repoListAdapter.updateRepoList(results?.list)
-//
-//                //searchResultsListRV.visibility = View.INVISIBLE
-//                //Log.d(tag,it)
-//            },
-//            {
-//                Log.d(tag, "Error fetching from $url: ${it.message}")
-//
-//            }
-//        )
-//
-//        //requestQueue.add(req)
-//    }
-
     private fun shareResults() {
 
         val text = getString(R.string.share_text)
@@ -183,11 +153,11 @@ class WrappedResultsActivity : AppCompatActivity() {
     }
 
 
-    private fun playMusic(){
-
-        val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
-        startActivity(intent)
-    }
+//    private fun playMusic(){
+//
+//        val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+//        startActivity(intent)
+//    }
 
 
 }
