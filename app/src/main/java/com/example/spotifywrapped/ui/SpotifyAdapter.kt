@@ -1,5 +1,6 @@
 package com.example.spotifywrapped.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,9 @@ class SpotifyAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
     var resultList = listOf<SpotifyItem>()
 
     fun updateResultList(newResultList: List<SpotifyItem>?) {
+        Log.d("Spotify", "$newResultList")
         resultList = newResultList ?: listOf()
+
         notifyDataSetChanged()
     }
 
@@ -52,11 +55,12 @@ class SpotifyAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
         fun bind(spotifyItem: SpotifyItem) {
             nameTV.text = ctx.getString(R.string.result_name, spotifyItem.name)
 
-            Glide.with(ctx)
-                .load(spotifyItem.images[0].url)
-                .into(iconIV)
+
+            if (spotifyItem.images != null) {
+                Glide.with(ctx)
+                    .load(spotifyItem.images)
+                    .into(iconIV)
+            }
         }
-
     }
-
 }

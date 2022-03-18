@@ -3,6 +3,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -49,6 +50,7 @@ class WrappedResultsActivity : AppCompatActivity() {
 
         viewModel.spotifyResults.observe(this) { spotifyResults ->
             if (spotifyResults != null) {
+                Log.d("Spotify", "${spotifyResults.items}")
                 spotifyAdapter.updateResultList(spotifyResults.items)
             }
         }

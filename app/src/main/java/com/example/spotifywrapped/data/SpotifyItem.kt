@@ -7,7 +7,7 @@ data class SpotifyItem(
 
     val id: String,
     val name: String,
-    val images: List<SpotifyImage>
+    val images: List<SpotifyImage>?
 
 
 ): Serializable
@@ -15,4 +15,4 @@ data class SpotifyItem(
 data class SpotifyImage(
 
     val url: String
-)
+) : Serializable
