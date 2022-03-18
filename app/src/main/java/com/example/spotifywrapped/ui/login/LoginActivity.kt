@@ -1,27 +1,14 @@
 package com.example.spotifywrapped.ui.login
 
-import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.example.spotifywrapped.R
-import com.example.spotifywrapped.WrappedResultsActivity
-import com.example.spotifywrapped.data.SessionManager
-import com.example.spotifywrapped.databinding.ActivityLoginBinding
+import com.example.spotifywrapped.ui.results.SpotifyResultsActivity
+import com.example.spotifywrapped.data.utils.SessionManager
 
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -88,24 +75,13 @@ class LoginActivity : AppCompatActivity() {
 
             when (res.type) {
                 AuthorizationResponse.Type.TOKEN -> {
-                    Log.d(
-                        "SpotifyLogin",
-                        "Access Token: $accessToken"
-                    )
-
-                    // add to shared prefs
-//                    val editor = sharedPreferences.edit()
+                    Log.d("SpotifyLogin", "Access Token: $accessToken")
 
                     sessionManager.saveToken(accessToken!!)
 
-//                    editor.putString(getString(R.string.token_val), accessToken)
-//                    editor.apply()
-
-//                    val savedToken = sharedPreferences.getString(getString(R.string.token_val), "token_val")
-
                     Log.d("SpotifyLogin", "savedToken: ${sessionManager.getToken()}")
 
-                    val intent = Intent(this, WrappedResultsActivity::class.java)
+                    val intent = Intent(this, SpotifyResultsActivity::class.java)
                     startActivity(intent)
 
                 }

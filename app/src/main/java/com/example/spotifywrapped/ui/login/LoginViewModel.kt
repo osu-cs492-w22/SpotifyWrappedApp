@@ -2,19 +2,13 @@ package com.example.spotifywrapped.ui.login
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.example.spotifywrapped.data.LoginRepository
-import com.example.spotifywrapped.data.Result
 
-import com.example.spotifywrapped.R
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel() : ViewModel() {
 
     val CLIENT_ID = "e52d26b096564c6299aea975dac46191"
     val CLIENT_SECRET = "ecb6cb7cc5c34b5bb5227f143a989815"

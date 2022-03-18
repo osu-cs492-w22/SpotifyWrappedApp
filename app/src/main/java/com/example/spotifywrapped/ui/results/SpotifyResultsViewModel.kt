@@ -1,4 +1,4 @@
-package com.example.spotifywrapped.ui
+package com.example.spotifywrapped.ui.results
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -7,7 +7,7 @@ import com.example.spotifywrapped.data.SpotifyResultsRepository
 import com.example.spotifywrapped.data.SpotifyService
 import kotlinx.coroutines.launch
 
-class SpotifyViewModel(application: Application): AndroidViewModel(application) {
+class SpotifyResultsViewModel(application: Application): AndroidViewModel(application) {
 
     private val resultsRepo = SpotifyResultsRepository(SpotifyService.create(application))
 
@@ -21,7 +21,6 @@ class SpotifyViewModel(application: Application): AndroidViewModel(application) 
         viewModelScope.launch {
             val result = resultsRepo.loadSpotifyResults(type, range)
             _spotifyResults.value = result.getOrNull()
-
         }
 
     }

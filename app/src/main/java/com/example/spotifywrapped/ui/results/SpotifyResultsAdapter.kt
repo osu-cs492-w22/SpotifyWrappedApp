@@ -1,4 +1,4 @@
-package com.example.spotifywrapped.ui
+package com.example.spotifywrapped.ui.results
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifywrapped.R
 import com.example.spotifywrapped.data.SpotifyItem
-import com.example.spotifywrapped.data.SpotifyItems
-import com.example.spotifywrapped.data.SpotifyResultsRepository
 
 
-class SpotifyAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
-    : RecyclerView.Adapter<SpotifyAdapter.ViewHolder>() {
+class SpotifyResultsAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
+    : RecyclerView.Adapter<SpotifyResultsAdapter.ViewHolder>() {
 
     var resultList = listOf<SpotifyItem>()
 
@@ -66,7 +64,6 @@ class SpotifyAdapter(private val onResultItemClicked: (SpotifyItem) -> Unit)
                     .placeholder(R.drawable.profile_icon)
                     .error(R.drawable.profile_icon)
                     .into(iconIV)
-
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.spotifywrapped.data
+package com.example.spotifywrapped.data.utils
 
 import android.content.Context
 import android.content.SharedPreferences
