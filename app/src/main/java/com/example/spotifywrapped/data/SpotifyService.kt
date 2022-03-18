@@ -22,7 +22,7 @@ interface SpotifyService {
     @Headers(
         "Accept: application/json",
         "Content-type: application/json",
-        "Authorization: Bearer BQC41rgG3g4cQ4fX89MnTJ2jqBl06TBIjy8UPyWQ2uiSuOUPsYP8h8noBlM2YzjHBA_L1NLC-cwMqy23geg_-laOokRC_I3CJkQK3iDcowMiMRXMKNEV3C4cIqBn-ZdqtYJDFF-sVx_0U9HxzrIfK1MlBlzU",
+        "Authorization: Bearer BQD7WCJ9mtzP9ScHYgnM-ro999Dgo9jC27MtwcJzDqq9EEAmjS8w1tCObGFKRhjtLIIL63fX3c2yXGnv4wz6iy_vGNW4gH7fAv_m-6SuU7IEP4G9khLoyroy738I_9U76EciUJy8xk17r5SOf6M0s_I2bStV",
         "Host: api.spotify.com"
     )
     @GET("https://api.spotify.com/v1/me/top/tracks")

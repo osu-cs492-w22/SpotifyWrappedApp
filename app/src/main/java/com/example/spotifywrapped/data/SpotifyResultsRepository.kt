@@ -20,7 +20,7 @@ class SpotifyResultsRepository(
     ): Result<SpotifyItems> =
         withContext(ioDispatcher){
             try{
-                val results = service.searchResults(5, 0, "medium_term")
+                val results = service.searchResults(15, 0, "medium_term")
                 Log.d("loaded Results", results.toString())
                 Result.success(results)
             }catch(e: Exception){
