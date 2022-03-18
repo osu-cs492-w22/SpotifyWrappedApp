@@ -16,6 +16,10 @@ import com.example.spotifywrapped.data.SpotifyItems
 import com.example.spotifywrapped.ui.SpotifyAdapter
 import com.example.spotifywrapped.ui.SpotifyViewModel
 
+import android.view.View
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 class WrappedResultsActivity : AppCompatActivity() {
 
