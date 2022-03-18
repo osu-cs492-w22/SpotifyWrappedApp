@@ -3,6 +3,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.se.omapi.Session
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +19,8 @@ import com.example.spotifywrapped.ui.SpotifyAdapter
 import com.example.spotifywrapped.ui.SpotifyViewModel
 
 import android.view.View
+import android.widget.Button
+import com.example.spotifywrapped.data.SessionManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -30,15 +33,23 @@ class WrappedResultsActivity : AppCompatActivity() {
     private lateinit var spotifyAdapter: SpotifyAdapter
     private val viewModel: SpotifyViewModel by viewModels()
 
-//    private lateinit var requestQueue: RequestQueue
+    private lateinit var sessionManager: SessionManager
+
     private lateinit var spotifyListRV: RecyclerView
+
+    private lateinit var topArtistsBtn: Button
+    private lateinit var topSongsBtn: Button
+    private lateinit var shortTermBtn: Button
+    private lateinit var mediumTermBtn: Button
+    private lateinit var longTermBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_wrapped_results)
 
         spotifyListRV = findViewById(R.id.rv_wrapped_list)
-
         spotifyAdapter = SpotifyAdapter(::onSpotifyItemClick)
 
         spotifyListRV.layoutManager = LinearLayoutManager(this)
@@ -46,7 +57,14 @@ class WrappedResultsActivity : AppCompatActivity() {
         spotifyListRV.adapter = spotifyAdapter
 
 
-//        requestQueue = Volley.newRequestQueue(this)
+        topArtistsBtn = findViewById(R.id.top_artists)
+        topSongsBtn = findViewById(R.id.top_songs)
+
+        shortTermBtn = findViewById(R.id.short_term)
+        mediumTermBtn = findViewById(R.id.medium_term)
+        longTermBtn = findViewById(R.id.long_term)
+
+        sessionManager = SessionManager(this)
 
         viewModel.spotifyResults.observe(this) { spotifyResults ->
             if (spotifyResults != null) {
@@ -55,16 +73,49 @@ class WrappedResultsActivity : AppCompatActivity() {
             }
         }
 
+        topArtistsBtn.setOnClickListener() {
+            Log.d("Spotify", "ARTISTS CLICKED")
+            sessionManager.setType("artists")
+            val range = sessionManager.getRange()
+            viewModel.loadResults("artists", range!!)
+        }
 
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        topSongsBtn.setOnClickListener() {
+            Log.d("Spotify", "SONGS CLICKED")
+            sessionManager.setType("tracks")
+            val range = sessionManager.getRange()
+            viewModel.loadResults("tracks", range!!)
+        }
 
-//        val type = sharedPrefs.getString(
-//            getString(R.string.pref_location_key),
-//            getString(R.string.pref_location_default)
-//        )
+        shortTermBtn.setOnClickListener() {
+            Log.d("Spotify", "SHORT CLICKED")
+            sessionManager.setRange("short_term")
+            val type = sessionManager.getType()
+            viewModel.loadResults(type!!, "short_term")
+        }
 
-        viewModel.loadResults("tracks")
+        mediumTermBtn.setOnClickListener() {
+            Log.d("Spotify", "MEDIUM CLICKED")
+            sessionManager.setRange("medium_term")
+            val type = sessionManager.getType()
+            viewModel.loadResults(type!!, "medium_term")
+        }
 
+        longTermBtn.setOnClickListener() {
+            Log.d("Spotify", "LONG CLICKED")
+            sessionManager.setRange("long_term")
+            val type = sessionManager.getType()
+            viewModel.loadResults(type!!, "long_term")
+        }
+
+        sessionManager.setType("artists")
+        sessionManager.setRange("medium_term")
+
+        val type = sessionManager.getType()
+        val range = sessionManager.getRange()
+
+
+        viewModel.loadResults(type!!, range!!)
     }
 
     private fun onSpotifyItemClick(spotifyItem: SpotifyItem) {

@@ -11,10 +11,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.io.IOException
 import kotlin.coroutines.coroutineContext
 
@@ -28,10 +25,10 @@ interface SpotifyService {
         "Host: api.spotify.com"
     )
 //    @Header("Authorization")
-    @GET("https://api.spotify.com/v1/me/top/tracks")
+    @GET("https://api.spotify.com/v1/me/top/{type}")
     suspend fun searchResults(
 
-//        @Path ("type")type: String,
+        @Path("type")type: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
         @Query ("time_range")range: String,

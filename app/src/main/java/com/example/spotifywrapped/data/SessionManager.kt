@@ -9,6 +9,28 @@ class SessionManager(context: Context) {
 
     companion object {
         const val USER_TOKEN = "user_token"
+        const val QUERY_TYPE = "query_type"
+        const val QUERY_RANGE = "query_range"
+    }
+
+    fun setType(type: String) {
+        val editor = prefs.edit()
+        editor.putString(QUERY_TYPE, type)
+        editor.apply()
+    }
+
+    fun getType(): String? {
+        return prefs.getString(QUERY_TYPE, null)
+    }
+
+    fun setRange(range: String) {
+        val editor = prefs.edit()
+        editor.putString(QUERY_RANGE, range)
+        editor.apply()
+    }
+
+    fun getRange(): String? {
+        return prefs.getString(QUERY_RANGE, null)
     }
 
     fun saveToken(token: String) {

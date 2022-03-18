@@ -15,12 +15,12 @@ class SpotifyResultsRepository(
 ) {
 
     suspend fun loadSpotifyResults(
-        type: String
-
+        type: String = "artists",
+        range: String = "short_term"
     ): Result<SpotifyItems> =
         withContext(ioDispatcher){
             try{
-                val results = service.searchResults(15, 0, "medium_term")
+                val results = service.searchResults(type, 35, 0, range)
                 Log.d("loaded Results", results.toString())
                 Result.success(results)
             }catch(e: Exception){

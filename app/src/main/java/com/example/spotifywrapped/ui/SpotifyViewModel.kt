@@ -15,11 +15,11 @@ class SpotifyViewModel(application: Application): AndroidViewModel(application) 
     val spotifyResults: LiveData<SpotifyItems?> = _spotifyResults
 
     fun loadResults(
-        type: String,
-
+        type: String = "artists",
+        range: String = "short_term"
     ){
         viewModelScope.launch {
-            val result = resultsRepo.loadSpotifyResults(type)
+            val result = resultsRepo.loadSpotifyResults(type, range)
             _spotifyResults.value = result.getOrNull()
 
         }
