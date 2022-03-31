@@ -15,6 +15,9 @@ We have chosen to include an additional feature that allows users to play snippe
 Figma Design:
 Spotify Wrapped Figma Prototype
 
+Figma Link: 
+https://www.figma.com/file/VrIE1Uvq2DVgyFVCXCSlrB/Spotify-Wrapped?node-id=0%3A1
+
 UI Organization & Explanation:
 Welcome Screen
 The Welcome Screen serves as an introduction to the user of the purposes of the app. It greets the user and offers to generate the user’s top songs through a clickable button. The button is labeled “Generate Your Results”. Clicking this button will take the user to the Login Screen.
